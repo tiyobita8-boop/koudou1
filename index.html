@@ -2,85 +2,243 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>ashwさんポータル</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>行動できない理由分解ツール</title>
 
 <style>
-body {
-  font-family: "メイリオ", sans-serif;
-  text-align: center;
-  background: #f5f5f5;
+body{
+  font-family:sans-serif;
+  background:#111;
+  color:#fff;
+  text-align:center;
+  margin:0;
+  padding:20px;
 }
 
-h1 {
-  margin-top: 30px;
+.container{
+  max-width:420px;
+  margin:auto;
 }
 
-.container {
-  width: 400px;
-  margin: 30px auto;
+h1{
+  font-size:22px;
+  margin-bottom:10px;
 }
 
-.card {
-  background: white;
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: 0.2s;
+.question{
+  margin:30px 0;
 }
 
-.card:hover {
-  transform: scale(1.03);
+button{
+  width:80%;
+  padding:15px;
+  margin:10px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  cursor:pointer;
 }
 
-a {
-  text-decoration: none;
-  color: #333;
-  font-size: 16px;
-  display: block;
+.yes{ background:#ff6b6b; color:#fff;}
+.no{ background:#4ecdc4; color:#fff;}
+
+.cta{
+  background:linear-gradient(45deg,#ff9a9e,#fad0c4);
+  color:#000;
+  font-weight:bold;
 }
+
+.hidden{display:none;}
+
+.result{
+  text-align:left;
+  margin-top:20px;
+  line-height:1.8;
+}
+
 </style>
-
 </head>
 
 <body>
 
-<h1>✨ashwさんポータル✨</h1>
-
 <div class="container">
 
-  <div class="card">
-    <a href="https://docs.google.com/spreadsheets/d/1I7Mw816rLk1vNcFsl7H8pVOOSXyj5dj_jU3ZkGsoww0/edit?usp=sharing" target="_blank">
-      ナレッジE
-    </a>
-  </div>
+<h1>あなたが動けない理由、<br>ちゃんと知ってる？</h1>
+<p>直感で答えてください</p>
 
-  <div class="card">
-    <a href="https://docs.google.com/document/d/1uxGj4cTI977WILnD46gyLMIIV8IbWntGyO35eNojNBg/edit?usp=sharing" target="_blank">
-      ナレッジW
-    </a>
-  </div>
- <div class="card">
-    <a href="https://chatgpt.com/g/g-69d66f2407608191b8a4206d8e65e9e6-ariisangpts" target="_blank">
-      ASHW_GPTS
-    </a>
-  </div>
-  <div class="card">
-    <a href="https://line.me/S/sticker/30927974/?lang=ja&utm_source=gnsh_stickerDetail" target="_blank">
-      LINE_STAMP
-    </a>
-  </div>
+<div id="quiz">
 
-  <div class="card">
-    <a href="https://tiyobita8-boop.github.io/pomodo-ro25-5/" target="_blank">
-      予備
-    </a>
-  </div>
+<div class="question" id="q"></div>
 
- 
+<button class="yes" onclick="answer(true)">YES</button>
+<button class="no" onclick="answer(false)">NO</button>
 
-  
 </div>
+
+<div id="result" class="hidden result"></div>
+
+</div>
+
+<script>
+
+let questions = [
+"やりたいことがあるのに、なぜか後回しにする",
+"やる前から『失敗したらどうしよう』と考える",
+"周りの目や評価が気になる",
+"今の環境に違和感がある",
+"何をやればいいか分からない瞬間がある",
+"本音より『こうあるべき』で選んでいる",
+"やる気はあるのに動けない"
+];
+
+let answers = [];
+let current = 0;
+
+function showQuestion(){
+  document.getElementById("q").innerText = questions[current];
+}
+
+function answer(val){
+  answers.push(val);
+  current++;
+
+  if(current < questions.length){
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult(){
+
+  document.getElementById("quiz").classList.add("hidden");
+
+  let yesCount = answers.filter(a=>a).length;
+  let resultText = "";
+
+  if(yesCount >=5){
+    // A
+    resultText = `
+    <h2>ズレ我慢タイプ</h2>
+
+    <p><b>あなたが動けなかった理由は「本音とのズレ」だった</b></p>
+
+    <p>
+    ■本質的な原因<br>
+    魂が「違う」と言っているのに、頭で我慢している状態
+    </p>
+
+    <p>
+    ■よくある内面の声<br>
+    「本当は違う気がする…でも仕方ない」
+    </p>
+
+    <p>
+    ■このままだと<br>
+    エネルギーが削られ続け、やる気がさらに消えていく
+    </p>
+
+    <p>
+    ■今すぐできる行動<br>
+    「本当はどうしたい？」を1つだけ書く
+    </p>
+
+    <p>📢シェア一言：私はずっと、自分に嘘をついていた</p>
+    `;
+  }
+  else if(yesCount >=3){
+    // B
+    resultText = `
+    <h2>自己不信タイプ</h2>
+
+    <p><b>あなたが動けなかった理由は「自分への信頼不足」だった</b></p>
+
+    <p>
+    ■本質的な原因<br>
+    過去の経験で「自分はできない」と思い込んでいる
+    </p>
+
+    <p>
+    ■よくある内面の声<br>
+    「どうせ無理かもしれない」
+    </p>
+
+    <p>
+    ■このままだと<br>
+    チャンスが来ても行動できず、現状維持が続く
+    </p>
+
+    <p>
+    ■今すぐできる行動<br>
+    「できたこと」を1つ思い出す
+    </p>
+
+    <p>📢シェア一言：できないんじゃない、信じてなかっただけ</p>
+    `;
+  }
+  else{
+    // C
+    resultText = `
+    <h2>方向迷子タイプ</h2>
+
+    <p><b>あなたが動けなかった理由は「方向が曖昧」だった</b></p>
+
+    <p>
+    ■本質的な原因<br>
+    本当に進みたい方向が明確になっていない
+    </p>
+
+    <p>
+    ■よくある内面の声<br>
+    「何からやればいいの？」
+    </p>
+
+    <p>
+    ■このままだと<br>
+    情報ばかり増えて動けなくなる
+    </p>
+
+    <p>
+    ■今すぐできる行動<br>
+    「一番気になること」を1つ選ぶ
+    </p>
+
+    <p>📢シェア一言：迷ってたんじゃない、決めてなかっただけ</p>
+    `;
+  }
+
+  resultText += `
+  <hr>
+
+  <p><b>ここまで来たあなたは、すでに一歩進んでいます。</b></p>
+
+  <p>
+  ただ、本当の原因はもう一段深いところにあります。
+  </p>
+
+  <p>
+  あなた専用の「深掘り診断」と<br>
+  魂のズレを整える3ステップを用意しました。
+  </p>
+
+  <button class="cta" onclick="location.href='#'">
+  無料で受け取る
+  </button>
+
+  <p>
+  ✔ 自分の本音が分かる<br>
+  ✔ 行動が軽くなる<br>
+  ✔ 迷いが消える
+  </p>
+  `;
+
+  document.getElementById("result").innerHTML = resultText;
+  document.getElementById("result").classList.remove("hidden");
+}
+
+showQuestion();
+
+</script>
 
 </body>
 </html>
